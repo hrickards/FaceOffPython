@@ -1,12 +1,13 @@
 import requests
+import sys
 import math
-from PIL import Image
+from PIL import Image, ImageDraw
 import urllib2 as urllib
 import io
 
 
 def process_image(image_url):
-	sb_data = analyze_skye_biometry(process_sky_biometry(image_url))
+	sb_data = analyze_sky_biometry(process_sky_biometry(image_url))
 	im_data = image_process(image_url)
 	return {
 		'sky_biometry': sb_data,
@@ -18,6 +19,8 @@ def image_process(image_url):
 	f = urllib.urlopen(image_url)
 	image_file = io.BytesIO(f.read())
 	im = Image.open(image_file)
+	draw=ImageDraw.Draw(im)
+	im.save(sys.stdout, "PNG")
 	rgb_im=im.convert('RGB')
 	r,g,b=rgb_im.getpixel((1,1))
 	print r,g,b
@@ -62,6 +65,7 @@ def eye_distance(result):
 
 # If file is run directly
 if __name__ == "__main__":
+
 	print process_image("http://tinyurl.com/673cksr")
 
 
