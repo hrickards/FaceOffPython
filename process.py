@@ -6,7 +6,7 @@ import io
 
 
 def process_image(image_url):
-	sb_data = process_sky_biometry(image_url)
+	sb_data = analyze_skye_biometry(process_sky_biometry(image_url))
 	im_data = image_process(image_url)
 	return {
 		'sky_biometry': sb_data,
@@ -27,6 +27,7 @@ def image_process(image_url):
 	}
 
 def process_sky_biometry(image_url):
+	#return the json file
 	request_data = {
 		"api_key": "eb140cfa76244c9585b3642b638084e4",
 		"api_secret": "100a3f93223045d7ba0fd10f3634c752",
@@ -34,7 +35,7 @@ def process_sky_biometry(image_url):
 		"attributes": "all" 
 	}
 	request = requests.get("http://api.skybiometry.com/fc/faces/detect.json", params=request_data)
-	return analyze_sky_biometry(request.json())
+	return request.json()
 
 def analyze_sky_biometry(data):
 	# Do all your data analysis on data here
