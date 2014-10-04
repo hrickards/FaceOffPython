@@ -4,6 +4,8 @@ from PIL import Image
 import urllib2 as urllib
 import io
 
+iu='http://tinyurl.com/673cksr';
+
 def process_image(image_url):
 	sb_data = process_sky_biometry(image_url)
 	im_data = image_process(image_url)
@@ -17,7 +19,9 @@ def image_process(image_url):
 	f = urllib.urlopen(image_url)
 	image_file = io.BytesIO(f.read())
 	im = Image.open(image_file)
-
+	rgb_im=im.convert('RGB')
+	r,g,b=rgb_im.getpixel((1,1))
+	print r,g,b
 	# Do all your image processing PIL stuff here
 	return {
 		'size': im.size
@@ -58,4 +62,7 @@ def eye_distance(result):
 
 # If file is run directly
 if __name__ == "__main__":
+	process_image(iu)
 	print process_image("http://tinyurl.com/673cksr")
+
+
