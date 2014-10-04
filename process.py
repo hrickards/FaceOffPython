@@ -14,13 +14,16 @@ def process_image(image_url):
 		'image_processing': im_data
 	}
 
+def save_image(im, name="out.png"):
+	draw=ImageDraw.Draw(im)
+	im.save(name, "PNG")
+
 def image_process(image_url):
 	# Download image
 	f = urllib.urlopen(image_url)
 	image_file = io.BytesIO(f.read())
 	im = Image.open(image_file)
-	draw=ImageDraw.Draw(im)
-	im.save(sys.stdout, "PNG")
+	save_image(im)
 	rgb_im=im.convert('RGB')
 	r,g,b=rgb_im.getpixel((1,1))
 	print r,g,b
