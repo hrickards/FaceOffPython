@@ -4,7 +4,6 @@ from PIL import Image
 import urllib2 as urllib
 import io
 
-iu='http://tinyurl.com/673cksr';
 
 def process_image(image_url):
 	sb_data = process_sky_biometry(image_url)
@@ -62,7 +61,6 @@ def eye_distance(result):
 
 # If file is run directly
 if __name__ == "__main__":
-	process_image(iu)
 	print process_image("http://tinyurl.com/673cksr")
 
 
