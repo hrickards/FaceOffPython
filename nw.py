@@ -208,7 +208,7 @@ def surreal_analysis(url):
 	idata=image_process(url)
 	getB(data,idata)
 	
-	save_image(idata, 'final.png')
+	save_image(idata, '/tmp/faceoff/final.png')
 	returns = {
 	        'brightness': brig,
 	        'nose_width': nose_stats(data, idata),
@@ -220,11 +220,12 @@ def surreal_analysis(url):
 	        'mood': mood(data, idata),
 	        'smiling': smiling(data, idata),
 	        'lips': lips(data, idata),
-	        'output_image': 'final.png'
+	        'output_image': 'http://104.131.73.46/final.png'
 	        }
 	if (glasses(data, idata) != 'true'):
 		returns['eye_area'] = eye_area(data, idata, brig)
 		
+	return returns
 	        
 
 if __name__ == "__main__":

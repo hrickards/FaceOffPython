@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_file
-from process import process_image
+from nw import surreal_analysis
 from quotes import positive, negative
 from werkzeug import secure_filename
 import os, pyimgur
@@ -63,7 +63,8 @@ def analyse(emotion):
 		image_url = "http://104.131.73.46/%s" % filename
 		print image_url
 
-	data = process_image(image_url)
+	data = surreal_analysis(image_url)
+	print(data)
 
 	if (emotion == 'positive'): return positive(data)
 	else: return negative(data)
