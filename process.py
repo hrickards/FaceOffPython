@@ -67,7 +67,8 @@ def eye_test(data,idata):
 	la=(la[0]*iw/100.0,la[1]*ih/100.0)
 	lb=(lb[0]*iw/100.0,lb[1]*ih/100.0)
 	print la,lb
-	save_image(draw_line(idata,la,lb))
+	save_image(draw_line(idata,la,lb),"mid.png")
+	return draw_line(idata,la,lb)
 
 def face_size(result):
 	tags = result['photos'][0]['tags'][0]
