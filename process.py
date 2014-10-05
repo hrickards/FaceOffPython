@@ -54,7 +54,7 @@ def  draw_line(idata, lef, rig,steps=200):
 		i=ii/(steps*1.0)
 		nx=int(lx+dx*i)
 		ny=int(ly+dy*i)
-		pix[nx,ny]=(0,0,0)
+		pix[nx,ny]=(255,0,0)
 	return idata
 
 def eye_test(data,idata):
@@ -87,9 +87,9 @@ def eye_distance(result):
 
 # If file is run directly
 if __name__ == "__main__":
-
-	idata=image_process("http://tinyurl.com/673cksr")
-	data=process_sky_biometry("http://tinyurl.com/673cksr")
+	url="http://i58.tinypic.com/30sj6a9.jpg"
+	idata=image_process(url)
+	data=process_sky_biometry(url)
 	eye_test(data,idata)
 
 
