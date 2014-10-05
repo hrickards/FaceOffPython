@@ -1,10 +1,13 @@
 import requests
+import requests_cache
 import sys
 import math
 from PIL import Image, ImageDraw
 import urllib2 as urllib
 import io
 from numpy import *
+
+requests_cache.install_cache('demo_cache')
 
 def process_image(image_url):
 	sb_data = analyze_sky_biometry(process_sky_biometry(image_url))
