@@ -64,7 +64,6 @@ def analyse(emotion):
 		print image_url
 
 	data = surreal_analysis(image_url)
-	print(data)
 
 	if (emotion == 'positive'): return positive(data)
 	else: return negative(data)
