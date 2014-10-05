@@ -118,30 +118,30 @@ def negative(data):
 
 	# random from 0 to 2
 	# if gender 'male' then male else female
-	choices.append([random.uniform(0,2), random_insult('male') if data['gender']=='male' else random_insult('female')])
+	choices.append([0.5, random_insult('male') if data['gender']=='male' else random_insult('female')])
 
 	# random from 0 to 2
 	# any from hair
-	choices.append([random.uniform(0,2), random_insult("hair")])
+	choices.append([0.5, random_insult("hair")])
 
 	# random from 0 to 2
 	# any from mood
 	# replace _____ with mood
-	choices.append([random.uniform(0,2), random_insult("mood").replace("_____", data['mood'])])
+	choices.append([0.2, random_insult("mood").replace("_____", data['mood'])])
 
 	# random from 0 to 2
 	# if glasses
 	# glasses
 	if data['glasses'] == 'true':
-		choices.append([random.uniform(0,2), random_insult("glasses")])
+		choices.append([1, random_insult("glasses")])
 
 	# random from 0 to 2
 	# if smiling 'true' then smiling else not_smiling
-	choices.append([random.uniform(0,2), random_insult('smiling') if data['smiling']=='true' else random_insult('not_smiling')])
+	choices.append([0.2, random_insult('smiling') if data['smiling']=='true' else random_insult('not_smiling')])
 
 	choices = filter(lambda x: x != None, choices)
 
-	return random_choice(choices)
+	return choices
 
 def random_choice(choices):
 	# Based on http://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice
@@ -162,6 +162,8 @@ def get_insult_z_score(insult_key, data_key, order, data):
 	sigma = STANDARD_DEVIATIONS[data_key]
 	x = data[data_key]
 	z_score = (x - mu)/sigma
+
+	if x == 0.0: return None
 	
 	if (order == 1 and z_score > 0) or (order == 0 and z_score < 0):
 		z_score = abs(z_score)
@@ -170,5 +172,5 @@ def get_insult_z_score(insult_key, data_key, order, data):
 		return None
 
 def positive(data):
-	return "You must have serious self-doubt issues if you're scared of a computer insulting you"
+	return [1,"You must have serious self-doubt issues if you're scared of a computer insulting you"]
 
