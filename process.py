@@ -27,7 +27,6 @@ def image_process(image_url):
 	rgb_im=im.convert('RGB')
 	# Do all your image processing PIL stuff here
 	return rgb_im
-
 def process_sky_biometry(image_url):
 	#return the json file
 	request_data = {
@@ -45,6 +44,30 @@ def analyze_sky_biometry(data):
 		"face_size": face_size(data),
 		"eye_distance": eye_distance(data)
 	}
+def  draw_line(idata, lef, rig,steps=200):
+	(lx,ly)=lef
+	(rx,ry)=rig
+	dy=ry-ly
+	dx=rx-lx
+	pix=idata.load()
+	for ii in xrange(0,steps):
+		i=ii/(steps*1.0)
+		nx=int(lx+dx*i)
+		ny=int(ly+dy*i)
+		pix[nx,ny]=(0,0,0)
+	return idata
+
+def eye_test(data,idata):
+	tags = data['photos'][0]['tags'][0]
+	a = tags['eye_left']
+	la=(a['x'],a['y'])	
+	b = tags['eye_right']
+	lb=(b['x'],b['y'])	
+	(iw,ih)=idata.size
+	la=(la[0]*iw/100.0,la[1]*ih/100.0)
+	lb=(lb[0]*iw/100.0,lb[1]*ih/100.0)
+	print la,lb
+	save_image(draw_line(idata,la,lb))
 
 def face_size(result):
 	tags = result['photos'][0]['tags'][0]
@@ -65,6 +88,8 @@ def eye_distance(result):
 # If file is run directly
 if __name__ == "__main__":
 
-	print process_image("http://tinyurl.com/673cksr")
+	idata=image_process("http://tinyurl.com/673cksr")
+	data=process_sky_biometry("http://tinyurl.com/673cksr")
+	eye_test(data,idata)
 
 
