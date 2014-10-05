@@ -1,13 +1,10 @@
 import requests
-import requests_cache
 import sys
 import math
 from PIL import Image, ImageDraw
 import urllib2 as urllib
 import io
 from numpy import *
-
-requests_cache.install_cache('demo_cache')
 
 def process_image(image_url):
 	sb_data = analyze_sky_biometry(process_sky_biometry(image_url))
@@ -31,6 +28,7 @@ def image_process(image_url):
 	# Do all your image processing PIL stuff here
 	return rgb_im
 def process_sky_biometry(image_url):
+	print image_url
 	#return the json file
 	request_data = {
 		"api_key": "eb140cfa76244c9585b3642b638084e4",
@@ -39,6 +37,7 @@ def process_sky_biometry(image_url):
 		"attributes": "all" 
 	}
 	request = requests.get("http://api.skybiometry.com/fc/faces/detect.json", params=request_data)
+	print request.json()
 	return request.json()
 
 def analyze_sky_biometry(data):

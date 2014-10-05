@@ -208,7 +208,6 @@ def surreal_analysis(url):
 	idata=image_process(url)
 	getB(data,idata)
 	
-	save_image(idata, '/tmp/faceoff/final.png')
 	returns = {
 	        'brightness': brig,
 	        'nose_width': nose_stats(data, idata),
@@ -224,38 +223,7 @@ def surreal_analysis(url):
 	        }
 	if (glasses(data, idata) != 'true'):
 		returns['eye_area'] = eye_area(data, idata, brig)
+	save_image(idata, '/tmp/faceoff/final.png')
 		
 	return returns
 	        
-
-if __name__ == "__main__":
-	#url="http://i62.tinypic.com/25h20xd.jpg" #zach without glasses
-	#url="http://i60.tinypic.com/2it4l6f.jpg" #zach with glasses
-	#url="http://i62.tinypic.com/dnbmea.jpg"#eugene without glasses
-	#url="http://i62.tinypic.com/2hi886e.jpg" #eugene with glasses
-	#url="http://i61.tinypic.com/21k9qba.jpg" #bojan looking forward
-	#url="http://i58.tinypic.com/35a3gwk.jpg" #andrew normal
-	#url="http://i59.tinypic.com/2lixyjq.jpg" #brenda too white
-	#url="http://i61.tinypic.com/xnursl.jpg"	 #bojan creep face
-	#url="http://i61.tinypic.com/2m2e79i.jpg" #akshat and multiple randoms
-	#url="http://i61.tinypic.com/rrmas7.jpg" #harry
-	#BAD url="http://i59.tinypic.com/90uek8.jpg" #bojan and akshat
-	#url="http://i59.tinypic.com/fxs5cg.jpg" #bojan with glasses and birdie
-	url="http://i62.tinypic.com/24zkfty.jpg"
-	data=process_sky_biometry(url)
-	idata=image_process(url)
-	getB(data,idata)
-	print "birghtness value=",brig
-	if(glasses(data,idata)!='true'):
-		print "normalized eye area= ",eye_area(data,idata,brig)
-	print "normalized nose width= ",nose_stats(data,idata)
-	print "normalized eye length= ",eye_stuff(data,idata)
-	print "face ratio= ",face_ratio(data,idata)
-	print "normalized nose length= ",nose_height(data,idata)
-	print "gender= ",gender(data,idata)
-	print "glasses= ",glasses(data,idata)
-	print "mood= ",mood(data,idata)
-	print "smiling= ",smiling(data,idata)
-	print "lips= ",lips(data,idata)
-	
-	save_image(idata,"final.png")

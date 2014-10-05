@@ -64,9 +64,10 @@ def analyse(emotion):
 		print image_url
 
 	data = surreal_analysis(image_url)
+	print data
 
-	if (emotion == 'positive'): return positive(data)
-	else: return negative(data)
+	if (emotion == 'positive'): return jsonify(results=positive(data))
+	else: return jsonify(results=negative(data))
 
 @app.route("/image/<filename>")
 def image(filename):
