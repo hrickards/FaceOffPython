@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <meta charset="utf-8">
+		<title>In Your Face</title>
+		<link rel="stylesheet" href="./bootstrap.css" media="screen">
+		<link rel="stylesheet" href="./font-awesome.css" media="screen">
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="jquery-ui.js"></script>
+		<script type="text/javascript" src="webcam.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				Webcam.set({
+					width: $("#camera").width()+50,
+					height: $("#camera").height()+50,
+					crop_width: 1080,
+					crop_height: 720
+				});
+				Webcam.attach("#camera");
+
+				$("#positive").hide();
+				$("#negative").hide();
+
+				$("#positiveButton").on('click', take_positive);
+				$("#negativeButton").on('click', take_negative);
+
+				hide_spinner();
+
+			});
+
+			function take_positive() { take_snapshot('positive'); return false; }
+			function take_negative() { take_snapshot('negative'); return false; }
+			function take_snapshot(emotion) {
+				show_spinner();
+				Webcam.snap(function(data_uri) {
+					// Turn data URI into file data
+					var blob = dataURItoBlob(data_uri);
+					var fd = new FormData(document.forms[0]);
+
+					// Create AJAX request
+					var xhr = new XMLHttpRequest();
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState == 4) {
+							hide_spinner();
+							var results_div = $("#" + emotion);
+							results_div.text(xhr.responseText);
+							results_div.slideDown();
+						}
+					}
+					fd.append("image", blob);
+					xhr.open('POST', 'http://104.131.73.46:81/api/' + emotion, true);
+					xhr.send(fd);
+				});
+			}
+
+			// Copied from StackOverflow
+			function dataURItoBlob(dataURI) {
+				var byteString = atob(dataURI.split(',')[1]);
+				var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+				var ab = new ArrayBuffer(byteString.length);
+				var ia = new Uint8Array(ab);
+				for (var i = 0; i < byteString.length; i++) {
+						ia[i] = byteString.charCodeAt(i);
+				}
+				return new Blob([ab, {type: mimeString}])
+		}
+
+		function show_spinner() {
+			$(".spinner").show();
+			$("#main").css("opacity", 0.2);
+		}
+
+		function hide_spinner() {
+			$(".spinner").hide();
+			$("#main").css("opacity", 1.0);
+		}
+		</script>
+	</head>
+
+	<body>
+		<div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="./" class="navbar-brand">In Your Face</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="#">Web</a>
+            </li>
+            <li>
+              <a href="#">Mobile</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+						<li><a href="#">#HackMIT2014</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+		<div class="spinner">
+			<div class="bounce1"></div>
+			<div class="bounce2"></div>
+			<div class="bounce3"></div>
+		</div>
+		<div id="main">
+			<div class="container">
+				<div id="camera"></div>
+				<div id="camera-buttons">
+					<div id="camera-buttons-inner">
+						<div class="btn-group">
+							<a id="positiveButton" class="btn btn-info camera-button" href="#">Compliment me!</a>
+						</div>
+						<div class="btn-group">
+							<a id="negativeButton" class="btn btn-info camera-button" href="#">Insult me!</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="results" id="positive"></div>
+			<div class="results" id="negative"></div>
+		</div>
+	</body>
+</html>
