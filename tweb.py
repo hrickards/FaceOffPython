@@ -8,4 +8,4 @@ def hello_monkey():
 	resp.message("Hello, Mobile Monkey")
 	return str(resp)
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=True, host='0.0.0.0')
