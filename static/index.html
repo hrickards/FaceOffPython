@@ -12,10 +12,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				Webcam.set({
-					width: $("#camera").width()+50,
-					height: $("#camera").height()+50,
-					crop_width: 1080,
-					crop_height: 720
+					width: 1080,
+					height: 720
 				});
 				Webcam.attach("#camera");
 
@@ -29,11 +27,28 @@
 
 			});
 
+			function nextValue() {
+				if (window.values.length < 1) {
+					window.results_div.slideToggle(400, function() {
+						window.results_div.text("You've been psychologically abused enough for one day!");
+						window.results_div.slideToggle();
+						$("#negativeButton").attr('disabled', true);
+						$("#positiveButton").attr('disabled', true);
+					});
+				} else {
+					window.results_div.slideToggle(400, function() {
+						window.results_div.text(window.values.shift()[1])
+						window.results_div.slideToggle();
+					});
+				}
+			}
+
 			function take_positive() { take_snapshot('positive'); return false; }
 			function take_negative() { take_snapshot('negative'); return false; }
 			function take_snapshot(emotion) {
 				show_spinner();
 				Webcam.snap(function(data_uri) {
+					$("#camera").html('<img src="'+data_uri+'"/>');
 					// Turn data URI into file data
 					var blob = dataURItoBlob(data_uri);
 					var fd = new FormData(document.forms[0]);
@@ -43,9 +58,21 @@
 					xhr.onreadystatechange = function() {
 						if (xhr.readyState == 4) {
 							hide_spinner();
-							var results_div = $("#" + emotion);
-							results_div.text(xhr.responseText);
-							results_div.slideDown();
+							$("#camera").html('<img src="http://104.131.73.46/final.png"/>');
+							window.results_div = $("#" + emotion);
+							window.results_span = $("#" + emotion + "Span");
+
+							window.values = JSON.parse(xhr.responseText)["results"];
+							$("#negativeButton").attr('disabled', true);
+							$("#positiveButton").attr('disabled', true);
+							$("#" + emotion + "Button").attr('disabled', false);
+							$("#" + emotion + "Button").off('click');
+							$("#" + emotion + "Button").on('click', function() {
+								nextValue();
+							});
+
+							window.results_div.slideDown();
+							nextValue();
 						}
 					}
 					fd.append("image", blob);
@@ -123,8 +150,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="results" id="positive"></div>
-			<div class="results" id="negative"></div>
+			<div class="results" id="positive"><span id="positiveSpan"></span></div>
+			<div class="results" id="negative"><span id="negativeSpan"></span></div>
 		</div>
 	</body>
-</html>
+g;

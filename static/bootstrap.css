@@ -13,7 +13,7 @@ body{padding-top:60px}
 #camera-buttons-inner { position: relative; left: -50% }
 #positive { background-color: #18bc9c; }
 #negative { background-color: #e74c3c; }
-.results { position: absolute; bottom: 0; width: 100%; padding: 1em 20%; }
+.results { position: absolute; bottom: 0; width: 100%; padding: 1em 20%; min-height: 3.6em; }
 html, body {overflow: hidden; }
 
 
