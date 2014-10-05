@@ -25,12 +25,8 @@ def image_process(image_url):
 	im = Image.open(image_file)
 	save_image(im)
 	rgb_im=im.convert('RGB')
-	r,g,b=rgb_im.getpixel((1,1))
-	print r,g,b
 	# Do all your image processing PIL stuff here
-	return {
-		'size': im.size
-	}
+	return rgb_im
 
 def process_sky_biometry(image_url):
 	#return the json file
